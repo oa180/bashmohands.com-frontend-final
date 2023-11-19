@@ -24,6 +24,7 @@ import {
 } from "@ant-design/icons";
 import sendBookingRequest from "../../../shared/model/sendBookingRequest";
 import { Link, useParams } from "react-router-dom";
+import payForSession from "../../../shared/model/payForAsession";
 
 const { TextArea } = Input;
 
@@ -419,29 +420,64 @@ export default function BookModal({
     modifiedDate.setMinutes(minutes);
     modifiedDate.setSeconds(0);
 
-    // POST Server
-    const res = await sendBookingRequest({
+    // Pay For a Session
+
+    const paymentResponse = await payForSession({
       instructorHandler: handler,
       clientHandler: user.handler,
       date: modifiedDate.toISOString(),
       notes: bookingState.model.notes,
     });
-
-    if (res.ok) {
-      // Change some UI
-      successMessage();
+    console.log(
+      "🚀 ~ file: BookSession.js:437 ~ onSubmit ~ response:",
+      paymentResponse
+    );
+    if (paymentResponse.ok) {
+      // // Change some UI
+      // successMessage();
       // Clean up response data
-      const response = await res.json();
-      const data = response.data;
+      const response = await paymentResponse.json();
+      console.log(
+        "🚀 ~ file: BookSession.js:437 ~ onSubmit ~ response:",
+        response
+      );
+
+      window.location.href = response.data.redirectTo;
+
+      // const data = response.data;
       // console.log(response, data);
-      setFinished(true);
+      // setFinished(true);
     } else {
       // Change some UI
       errorMessage();
       setSubmitting(false);
-      const response = await res.json();
+      const response = await paymentResponse.json();
       console.log("Something went worng!", response);
     }
+
+    // POST Server
+    // const res = await sendBookingRequest({
+    //   instructorHandler: handler,
+    //   clientHandler: user.handler,
+    //   date: modifiedDate.toISOString(),
+    //   notes: bookingState.model.notes,
+    // });
+
+    // // if (res.ok) {
+    // //   // Change some UI
+    // //   successMessage();
+    // //   // Clean up response data
+    // //   const response = await res.json();
+    //   const data = response.data;
+    //   // console.log(response, data);
+    //   setFinished(true);
+    // } else {
+    //   // Change some UI
+    //   errorMessage();
+    //   setSubmitting(false);
+    //   const response = await res.json();
+    //   console.log("Something went worng!", response);
+    // }
   }
 
   return (

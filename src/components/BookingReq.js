@@ -25,6 +25,7 @@ export const BookingReq = ({ penddingSessions }) => {
       key: index,
       img: (
         <div className="table-img">
+          {console.log("session", session)}
           <img src={session.Client.photo} alt="img" />
           <p>{session.clientHandler}</p>
         </div>

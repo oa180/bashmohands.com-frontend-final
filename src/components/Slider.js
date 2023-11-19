@@ -43,6 +43,7 @@ export const Slider = () => {
       { gender: [] },
     ];
 
+    // const baseUrl = `${process.env.REACT_APP_BACKEND_API}user/filter`;
     const baseUrl = `http://localhost:5000/api/user/filter`;
     fetch(baseUrl, {
       method: "POST",

@@ -52,8 +52,8 @@ export const Filter = () => {
       { gender: getGender }
     );
     console.log("🚀 ~ file: FilterSlider.js:48 ~ result ~ output:", output);
-    // const baseUrl = `https://bashmohands.onrender.com/api/user/filter`;
-    const baseUrl = `http://localhost:5000/api/user/filter`;
+    const baseUrl = `https://bashmohands.onrender.com/api/user/filter?page=1&limit=12`;
+    // const baseUrl = `http://localhost:5000/api/user/filter?page=1&limit=12`;
     fetch(baseUrl, {
       method: "POST",
       headers: {

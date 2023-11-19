@@ -67,7 +67,7 @@ export default function SessionsPage() {
         client: {
           firstName: userSession.clientHandler,
           handler: "attendeeHandler",
-          avatar: userSession.Client.photo,
+          avatar: userSession.Client.photo && userSession.Client.photo,
         },
         status: userSession.status,
         date: userSession.date.split("T")[0],
