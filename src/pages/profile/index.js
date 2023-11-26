@@ -58,7 +58,7 @@ async function asyncProfilePageLoader(request, params) {
   // determine is this handler mine or not
   let isMine = false;
   const { user } = getAuthData();
-  if (user.handler === handler) {
+  if (user && user.handler === handler) {
     isMine = true;
   }
 

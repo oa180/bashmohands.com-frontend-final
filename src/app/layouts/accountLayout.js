@@ -68,6 +68,7 @@ export function AsideCom() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user } = useRouteLoaderData("root");
+  console.log("🚀 ~ file: accountLayout.js:71 ~ AsideCom ~ user:", user);
   console.log("acc nav", pathname);
   const items = [
     {

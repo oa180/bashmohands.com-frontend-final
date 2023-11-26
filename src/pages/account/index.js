@@ -20,6 +20,7 @@ const { Column } = Table;
 const { user, token } = getAuthData();
 export default function Account() {
   const { user } = useRouteLoaderData("root");
+  console.log("🚀 ~ file: index.js:23 ~ Account ~ user:", user);
 
   const [isOpen, setIsOpen] = useState(false);
 

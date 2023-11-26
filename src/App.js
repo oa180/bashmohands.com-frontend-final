@@ -78,7 +78,7 @@ const router = createBrowserRouter([
     path: "/:handler",
     element: <ProfileLayout />,
     errorElement: <NotFound />,
-    loader: userAuthLoader,
+    // loader: userAuthLoader,
     id: "profile",
     children: [
       {
