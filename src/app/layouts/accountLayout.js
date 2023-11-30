@@ -3,6 +3,7 @@ import {
   useNavigate,
   useRouteLoaderData,
   useLocation,
+  redirect,
 } from "react-router";
 import {
   Breadcrumb,
@@ -27,10 +28,12 @@ import { Link } from "react-router-dom";
 import { ButtonOutlined } from "../../shared/ui";
 import { ButtonBlack } from "../../shared/ui/ButtonBlack";
 import signUserOut from "../../shared/model/signUserOut";
+import { useState } from "react";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 export default function AccountLayout() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <>
       <Layout
@@ -53,8 +56,9 @@ export default function AccountLayout() {
           }}
           width={290}
           className="aside"
+          collapsed={!drawerOpen}
         >
-          <AsideCom />
+          <AsideCom drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
         </Sider>
         <Content
           style={{
@@ -68,7 +72,8 @@ export default function AccountLayout() {
     </>
   );
 }
-export function AsideCom() {
+export function AsideCom(props) {
+  console.log("🚀 ~ file: accountLayout.js:76 ~ AsideCom ~ props:", props);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user } = useRouteLoaderData("root");
@@ -108,7 +113,19 @@ export function AsideCom() {
       onClick: logOut,
     },
   ];
+  const handleMenuSelect = ({ key }) => {
+    if (key === "/") {
+      logOut();
+      // setDrawerOpen(false);
+      navigate("/");
+    } else {
+      // Close the drawer when any menu item is selected
+      // setDrawerOpen(false);
+      // console.log(drawerOpen);
 
+      navigate(key);
+    }
+  };
   return (
     <>
       {!user && (
@@ -157,10 +174,8 @@ export function AsideCom() {
               inlineIndent={5}
               style={{ border: "none" }}
               items={items}
-              defaultSelectedKeys={[`${pathname}`]}
-              onSelect={({ key, keyPath, selectedKeys, domEvent }) => {
-                navigate(key);
-              }}
+              // defaultSelectedKeys={[`${pathname}`]}
+              onSelect={handleMenuSelect}
             />
           </ConfigProvider>
         </>
