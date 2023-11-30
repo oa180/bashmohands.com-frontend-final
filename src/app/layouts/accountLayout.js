@@ -21,8 +21,12 @@ import {
   CalendarOutlined,
   SettingOutlined,
   AntDesignOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { ButtonOutlined } from "../../shared/ui";
+import { ButtonBlack } from "../../shared/ui/ButtonBlack";
+import signUserOut from "../../shared/model/signUserOut";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -68,75 +72,99 @@ export function AsideCom() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user } = useRouteLoaderData("root");
+  // const user = { handler: "omar" };
   console.log("🚀 ~ file: accountLayout.js:71 ~ AsideCom ~ user:", user);
   console.log("acc nav", pathname);
+
+  const logOut = () => {
+    signUserOut();
+  };
+
   const items = [
     {
       label: "Home",
-      key: `/${user.handler}/account`,
+      key: `/${user && user.handler}/account`,
       icon: <HomeOutlined />,
     },
     {
       label: "Sessions",
-      key: `/${user.handler}/account/sessions`,
+      key: `/${user && user.handler}/account/sessions`,
       icon: <CalendarOutlined />,
     },
     {
       label: "My Profile",
-      key: `/${user.handler}/account/update`,
+      key: `/${user && user.handler}/account/update`,
       icon: <UserOutlined />,
     },
     {
       label: "Settings",
-      key: `/${user.handler}/account/settings`,
+      key: `/${user && user.handler}/account/settings`,
       icon: <SettingOutlined />,
+    },
+    {
+      label: "Sign Out",
+      key: "/",
+      icon: <LogoutOutlined />,
+      onClick: logOut,
     },
   ];
 
   return (
     <>
-      <Flex vertical={false} style={{ marginBottom: "12px" }}>
-        <Avatar
-          className="img-avatar"
-          size={{ xs: 50, sm: 50, md: 75, lg: 75, xl: 75, xxl: 100 }}
-          src={user.photo}
-        />
-        <Flex vertical={true} justify="center" className="prof">
-          <div style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {user.firstName + " " + user.lastName}
-          </div>
-          <Link to={"/" + user.handler} style={{ color: "#343434" }}>
-            View profile
-          </Link>
-        </Flex>
-      </Flex>
-      <ConfigProvider
-        theme={{
-          components: {
-            Menu: {
-              itemSelectedBg: "#fff",
-              itemHoverBg: "#fff",
-              itemHoverColor: "#da005c",
-              itemActiveBg: "#fff",
-              padding: 0,
-              iconSize: 24,
-              fontSize: 20,
-              iconMarginInlineEnd: 20,
-            },
-          },
-        }}
-      >
-        <Menu
-          mode="inline"
-          inlineIndent={5}
-          style={{ border: "none" }}
-          items={items}
-          defaultSelectedKeys={[`${pathname}`]}
-          onSelect={({ key, keyPath, selectedKeys, domEvent }) => {
-            navigate(key);
-          }}
-        />
-      </ConfigProvider>
+      {!user && (
+        <div className="authHeaderBtns">
+          <Flex vertical={false} style={{ justifyContent: "space-around" }}>
+            <ButtonOutlined to="/login">Login</ButtonOutlined>
+            <ButtonBlack to="/signup">Signup</ButtonBlack>
+          </Flex>
+        </div>
+      )}
+      {user && (
+        <>
+          <Flex vertical={false} style={{ marginBottom: "12px" }}>
+            <Avatar
+              className="img-avatar"
+              size={{ xs: 50, sm: 50, md: 75, lg: 75, xl: 75, xxl: 100 }}
+              src={user.photo}
+            />
+            <Flex vertical={true} justify="center" className="prof">
+              <div style={{ fontSize: "18px", fontWeight: "bold" }}>
+                {user.firstName + " " + user.lastName}
+              </div>
+              <Link to={"/" + user.handler} style={{ color: "#343434" }}>
+                View profile
+              </Link>
+            </Flex>
+          </Flex>
+          <ConfigProvider
+            theme={{
+              components: {
+                Menu: {
+                  itemSelectedBg: "#fff",
+                  itemHoverBg: "#fff",
+                  itemHoverColor: "#da005c",
+                  itemActiveBg: "#fff",
+                  padding: 0,
+                  iconSize: 24,
+                  fontSize: 20,
+                  iconMarginInlineEnd: 20,
+                },
+              },
+            }}
+          >
+            <Menu
+              mode="inline"
+              inlineIndent={5}
+              style={{ border: "none" }}
+              items={items}
+              defaultSelectedKeys={[`${pathname}`]}
+              onSelect={({ key, keyPath, selectedKeys, domEvent }) => {
+                navigate(key);
+              }}
+            />
+          </ConfigProvider>
+        </>
+      )}
     </>
   );
 }
