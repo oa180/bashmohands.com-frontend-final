@@ -9,7 +9,9 @@ export default function sendBookingRequest({
 }) {
   // Request to server
   console.log(date);
-  return fetch(`http://localhost:5000/api/session/book`, {
+  const baseUrl = `${process.env.REACT_APP_BACKEND_API}session/book`;
+  // const baseUrl = `http://localhost:5000/api/session/book`;
+  return fetch(baseUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
